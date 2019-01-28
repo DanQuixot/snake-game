@@ -6,6 +6,15 @@ canvas.height = window.innerHeight;
 
 let c = canvas.getContext('2d');
 
+// Snake's original dimensions
+  let x = 100;  //Start Position X
+  let y = 100;  //Start Position Y
+  let width = 20; // Start width
+  let height = 20; // Start height
+  let speed = 5; // Start Speed
+  let dx = 0; // Start Direction X
+  let dy = 0; // Start Direction Y
+
 // Set background function
 let background = function() {
   c.fillStyle = "gray";
@@ -13,76 +22,60 @@ let background = function() {
   c.stroke();
 }
 
-// Direction and speed variables
-// let up = 200;
-// let down = 200;
-// let right = 200;
-// let left = 200;
-// let dx = 2;
-// let dy = 2;
-
-
-
-// The Snake Function
-
-function Snake(x, y, dx, dy, snakeWidth, snakeHeight) {
-  // Current position
-  this.x = x;
-  this.y = y;
-
-  // Current delta
-  this.dx = dx;
-  this.dy = dy;
-
-  // Current Width and Height
-  this.snakeWidth = snakeWidth;
-  this.snakeHeight = snakeHeight;
-
-  this.draw = function () {
-    c.beginPath();
-    c.fillStyle = "black";
-    c.fillRect(this.x, this.y, this.snakeWidth, this.snakeHeight);
-    c.stroke();
+// Update Snake's direction
+let update = function() {
+  if (x > innerWidth) {
+    x = 0;
+  } 
+  if (y > innerHeight) {
+    y = 0;
   }
-  // // Change direction
-  // // this.changeDirection = function(e) {
-  // //   switch(e.keyCode) {
-  // //     case 37 || 39: 
-  // //       this.x = -this.x;
-  // //       break;
-  // //     case 38 || 40: 
-  // //       this.y = -this.y;
-  // //       break;
-  // //   }
-  // }
-  this.update = function() {
-    if (this.x > innerWidth) {
-      this.x = 0;
-    } 
-    if (this.y > innerHeight) {
-      this.y = 0;
-    }
-    if (this.x < 0) {
-      this.x = innerWidth;
-    }
-    if (this.y < 0) {
-      this.y = innerHeight;
-    }
-
-    this.x += this.dx;
-    this.y += this.dy;
-
-    this.draw();
+  if (x < 0) {
+    x = innerWidth;
   }
+  if (y < 0) {
+    y = innerHeight;
+  }
+  x += dx;
+  y += dy;  
 }
 
-let snake = new Snake(100, 100, 4, 0, 20, 20);
+// Draw Snake's head
+let drawHead = function() {
+  c.beginPath();
+  c.fillStyle = 'black';
+  c.fillRect (x, y, width, height);
+  c.stroke();
+}
 
+// Arrows listener
+document.addEventListener('keydown', function(e) {
+  if (e.keyCode === 37 || e.keyCode === 65) {
+    dy = 0;
+    dx = - speed;
+  }
+  if(e.keyCode === 38 || e.keyCode === 87) {
+    dx = 0;
+    dy = - speed;
+  }
+  if (e.keyCode === 39 || e.keyCode === 68) {
+    dy = 0;
+    dx = speed;
+  }
+  if (e.keyCode === 40 || e.keyCode === 83) {
+    dx = 0;
+    dy = speed;
+  }  
+  console.log(e.keyCode);
+});
+
+// Start animation
 function animate() {
   requestAnimationFrame(animate);
-  // window.addEventListener('keydown', )
   c.clearRect(0, 0, innerWidth, innerHeight);
   background();
-  snake.update();
+  update();
+  drawHead();
+  
 } 
 animate();
