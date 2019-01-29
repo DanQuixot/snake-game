@@ -22,7 +22,7 @@ let c = canvas.getContext('2d');
 
 // Set background function
 let background = function() {
-  c.fillStyle = "gray";
+  c.fillStyle = 'rgb(128,128,128, 0.5)';
   c.fillRect(0, 4, canvas.width, canvas.height);
   c.stroke();
 }
@@ -98,6 +98,7 @@ document.addEventListener('keydown', function(e) {
 
 // Start animation
 function animate() {
+  // setInterval(animate, 1000);
   requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
   background();
@@ -107,3 +108,4 @@ function animate() {
   collisionDetection();
 } 
 animate();
+// setInterval(animate, 1000)
